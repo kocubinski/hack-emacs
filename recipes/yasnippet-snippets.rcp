@@ -1,0 +1,5 @@
+(:name yasnippet-snippets
+       :description "Snippets for yasnippet"
+       :type github
+       :pkgname "AndreaCrotti/yasnippet-snippets"
+       :depends yasnippet)
