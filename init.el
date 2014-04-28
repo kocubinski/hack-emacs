@@ -21,8 +21,9 @@
 ;; packages
 (setq my-packages
     (append '(cl-lib evil color-theme solarized-theme yascroll auto-complete pos-tip helm
-		     popup yasnippet yasnippet-snippets flycheck powerline 
-		     rainbow-delimiters projectile js2-mode skewer-mode tern)))
+		     popup yasnippet yasnippet-snippets flycheck powerline paredit
+		     rainbow-delimiters projectile js2-mode skewer-mode tern clojure-mode
+		     cider ac-nrepl)))
 
 (el-get 'sync my-packages)
 
@@ -39,7 +40,10 @@
 (when (display-graphic-p)
    (if (eq system-type 'windows-nt) 
        (set-face-attribute 'default nil :font "Consolas-11")
-     (set-face-attribute 'default nil :font "Inconsolata-15")))
+     (set-face-attribute 'default nil :font "Inconsolata-12")
+     ;(set-face-attribute 'default nil :font "Monaco-12")
+     ;(set-face-attribute 'default nil :font "Dejavu Sans Mono-11")
+     ))
 
 ;; scroll bar
 (fringe-mode 4)
@@ -231,3 +235,45 @@
        (require 'tern-auto-complete)
        (tern-ac-setup))))
 (ome-tern-setup)
+
+;; clojure/lisp ;;
+;;;;;;;;;;;;;;;;;;
+
+(require 'paredit)
+(require 'cider)
+
+(defun ome-cider-setup ()
+  (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+  (setq cider-repl-tab-command 'indent-for-tab-command)
+  (setq cider-repl-pop-to-buffer-on-connect nil)
+  (setq cider-popup-stacktraces nil)
+  (setq cider-repl-popup-stacktraces t)
+  (setq cider-auto-select-error-buffer t)
+  (setq nrepl-hide-special-buffers t)
+  (setq nrepl-buffer-name-separator "-")
+  (setq nrepl-buffer-name-show-port t))
+(ome-cider-setup)
+
+(defun ome-ac-nrepl-setup ()
+  (add-hook 'cider-mode-hook 'ac-nrepl-setup)
+  (add-hook 'cider-repl-mode-hook 'ac-nrepl-setup)
+  (eval-after-load "auto-complete"
+    '(add-to-list 'ac-modes 'cider-repl-mode)))
+(ome-ac-nrepl-setup)
+
+;; try to speed up autocomplete
+(defun clojure-auto-complete ()
+  (interactive)
+  (let ((ac-sources
+         `(ac-source-nrepl-ns
+           ac-source-nrepl-vars
+           ac-source-nrepl-ns-classes
+           ac-source-nrepl-all-classes
+           ac-source-nrepl-java-methods
+           ac-source-nrepl-static-methods
+           ,@ac-sources)))
+  (auto-complete)))
+
+(add-hook 'clojure-mode-hook 
+	  (lambda ()
+	    (paredit-mode)))
