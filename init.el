@@ -194,6 +194,10 @@
 
 ;; misc ;;
 ;;;;;;;;;;
+(setq org-todo-keywords
+      '((sequence "TODO" "FEEDBACK" "VERIFY" "|" "DONE" "DELEGATED")))
+(setq org-log-done 'time)
+
 (require 'rainbow-delimiters) ; shouldn't need this.. ?
 (global-rainbow-delimiters-mode)
 
@@ -211,6 +215,23 @@
 
 ;; TODO lots more at: (parens, CSS hacks)
 ;; https://github.com/xiaohanyu/oh-my-emacs/blob/master/core/ome-miscs.org
+
+;; XML
+
+(defun bf-pretty-print-xml-region (begin end)
+  "Pretty format XML markup in region. You need to have nxml-mode
+http://www.emacswiki.org/cgi-bin/wiki/NxmlMode installed to do
+this.  The function inserts linebreaks to separate tags that have
+nothing but whitespace between them.  It then indents the markup
+by using nxml's indentation rules."
+  (interactive "r")
+  (save-excursion
+      (nxml-mode)
+      (goto-char begin)
+      (while (search-forward-regexp "\>[ \\t]*\<" nil t) 
+        (backward-char) (insert "\n"))
+      (indent-region begin end))
+    (message "Ah, much better!"))
 
 ;; javascript ;;
 ;;;;;;;;;;;;;;;;
@@ -241,12 +262,13 @@
 
 (require 'paredit)
 (require 'cider)
+(require 'cider-macroexpansion)
 
 (defun ome-cider-setup ()
   (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
   (setq cider-repl-tab-command 'indent-for-tab-command)
   (setq cider-repl-pop-to-buffer-on-connect nil)
-  (setq cider-popup-stacktraces nil)
+  (setq cider-popup-stacktraces t)
   (setq cider-repl-popup-stacktraces t)
   (setq cider-auto-select-error-buffer t)
   (setq nrepl-hide-special-buffers t)
@@ -262,17 +284,17 @@
 (ome-ac-nrepl-setup)
 
 ;; try to speed up autocomplete
-(defun clojure-auto-complete ()
-  (interactive)
-  (let ((ac-sources
-         `(ac-source-nrepl-ns
-           ac-source-nrepl-vars
-           ac-source-nrepl-ns-classes
-           ac-source-nrepl-all-classes
-           ac-source-nrepl-java-methods
-           ac-source-nrepl-static-methods
-           ,@ac-sources)))
-  (auto-complete)))
+;; (defun clojure-auto-complete ()
+;;   (interactive)
+;;   (let ((ac-sources
+;;          `(ac-source-nrepl-ns
+;;            ac-source-nrepl-vars
+;;            ac-source-nrepl-ns-classes
+;;            ac-source-nrepl-all-classes
+;;            ac-source-nrepl-java-methods
+;;            ac-source-nrepl-static-methods
+;;            ,@ac-sources)))
+;;   (auto-complete)))
 
 (add-hook 'clojure-mode-hook 
 	  (lambda ()
