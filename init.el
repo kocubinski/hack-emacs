@@ -90,6 +90,9 @@
 
 (global-set-key (kbd "C-,") 'other-window)
 
+;; default is C-j for newline-and-indent
+(define-key global-map (kbd "RET") 'newline-and-indent)
+
 ;; core ;;
 ;;;;;;;;;;
 
@@ -145,6 +148,7 @@
                 (add-to-list 'ac-sources 'ac-source-filename))))
 
   (ac-config-default))
+(ome-auto-complete-setup)
 
 ;; helm!!
 (defun ome-helm-setup ()
@@ -156,8 +160,6 @@
   (global-set-key (kbd "M-x") 'helm-M-x)
   (global-set-key (kbd "C-x C-f") 'helm-find-files)
   (global-set-key (kbd "C-x C-r") 'helm-recentf))
-
-(ome-auto-complete-setup)
 (ome-helm-setup)
 
 ;; yasnippet
@@ -189,11 +191,11 @@
           yas-no-prompt))
   (yas-global-mode)
   (add-to-list 'yas/root-directory "~/.emacs.d/el-get/yasnippet-snippets/"))
-
 (ome-yasnippet-setup)
 
 ;; misc ;;
 ;;;;;;;;;;
+
 (setq org-todo-keywords
       '((sequence "TODO" "FEEDBACK" "VERIFY" "|" "DONE" "DELEGATED")))
 (setq org-log-done 'time)
