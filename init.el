@@ -22,8 +22,8 @@
 (setq my-packages
     (append '(cl-lib evil color-theme solarized-theme yascroll auto-complete pos-tip helm
 		     popup yasnippet yasnippet-snippets flycheck powerline paredit
-		     rainbow-delimiters projectile js2-mode skewer-mode tern clojure-mode
-		     cider ac-nrepl)))
+		     rainbow-delimiters projectile js2-mode skewer-mode simple-httpd tern
+		     clojure-mode cider ac-nrepl)))
 
 (el-get 'sync my-packages)
 
@@ -101,11 +101,11 @@
 
 ;; flycheck (aka "Flymake done right")
 
+(require 'flycheck)
 (defun ome-flycheck-setup ()
   (eval-after-load 'flycheck
     '(setq flycheck-checkers (delq 'emacs-lisp-checkdoc flycheck-checkers)))
   (add-hook 'prog-mode-hook 'flycheck-mode))
-
 (ome-flycheck-setup)
 
 ;; upgrade from 80, geez!
@@ -237,6 +237,9 @@ by using nxml's indentation rules."
 
 ;; javascript ;;
 ;;;;;;;;;;;;;;;;
+(require 'tern)
+(require 'skewer-mode)
+(require 'skewer-repl)
 
 (defun ome-js2-mode-setup ()
   (add-hook 'js2-mode-hook
@@ -258,6 +261,12 @@ by using nxml's indentation rules."
        (require 'tern-auto-complete)
        (tern-ac-setup))))
 (ome-tern-setup)
+
+(defun ome-skewer-mode-setup ()
+  (add-hook 'js2-mode-hook 'skewer-mode)
+  (add-hook 'css-mode-hook 'skewer-css-mode)
+  (add-hook 'html-mode-hook 'skewer-html-mode))
+(ome-skewer-mode-setup)
 
 ;; clojure/lisp ;;
 ;;;;;;;;;;;;;;;;;;
