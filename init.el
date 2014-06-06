@@ -23,7 +23,7 @@
     (append '(cl-lib evil color-theme solarized-theme yascroll auto-complete pos-tip helm
 		     popup yasnippet yasnippet-snippets flycheck powerline paredit
 		     rainbow-delimiters projectile js2-mode skewer-mode tern clojure-mode
-		     cider ac-nrepl)))
+		     cider ac-nrepl org-mode)))
 
 (el-get 'sync my-packages)
 
@@ -67,6 +67,12 @@
   (powerline-default-theme))
 
 (ome-powerline-setup)
+
+(blink-cursor-mode -1)
+
+(setq backup-directory-alist `(("." . "~/.saves")))
+
+(require 'org)
 
 ;; keybinds ;;
 ;;;;;;;;;;;;;;
