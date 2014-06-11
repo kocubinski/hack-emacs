@@ -25,5 +25,6 @@
 	       web-mode
 	       rainbow-mode
 	       org-mode
+	       find-file-in-project
 	      )))
 

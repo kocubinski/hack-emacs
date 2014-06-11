@@ -30,7 +30,7 @@
 ;;;;;;;;;
 
 ;; set theme
-(color-theme-solarized-light)
+(color-theme-solarized-dark)
 
 ;; set font
 (when (display-graphic-p)
@@ -142,7 +142,7 @@
   (define-key ac-mode-map (kbd "M-/") 'ac-fuzzy-complete)
   (dolist (ac-mode '(text-mode org-mode))
     (add-to-list 'ac-modes ac-mode))
-  (dolist (ac-mode-hook '(text-mode-hook org-mode-hook prog-mode-hook))
+  (dolist (ac-mode-hook '(text-mode-hook org-mode-hook prog-mode-hook web-mode-hook))
     (add-hook ac-mode-hook
               (lambda ()
                 (setq ac-fuzzy-enable t)
@@ -270,7 +270,7 @@ by using nxml's indentation rules."
   (add-hook 'html-mode-hook 'skewer-html-mode))
 (ome-skewer-mode-setup)
 
-;; web dev ;;
+;; HTML/CSS ;;
 ;;;;;;;;;;;;;
 
 (defun ome-web-mode-setup ()
@@ -300,11 +300,17 @@ by using nxml's indentation rules."
     ;; For <script> parts
     (setq web-mode-script-padding 1)
     ;; For multi-line blocks
-    (setq web-mode-block-padding 0))
+    (setq web-mode-block-padding 0)
+    (auto-complete-mode)
+    (add-to-list 'ac-sources ac-css-classes-source))
 
   (add-hook 'web-mode-hook 'ome-web-mode-hook))
 
 (ome-web-mode-setup)
+
+(load-file "~/.emacs.d/web-mode-snippets.el")
+(load-file "~/.emacs.d/ac-web.el")
+(require 'ac-web)
 
 (require 'rainbow-mode)
 
@@ -355,3 +361,11 @@ by using nxml's indentation rules."
 (add-hook 'clojure-mode-hook 
 	  (lambda ()
 	    (paredit-mode)))
+
+(defun remove-dos-eol ()
+  "Do not show ^M in files containing mixed UNIX and DOS line endings."
+  (interactive)
+  (setq buffer-display-table (make-display-table))
+  (aset buffer-display-table ?\^M []))
+
+(add-hook 'cider-repl-mode-hook 'remove-dos-eol) ;Remove ^M from clojure repl in windows
