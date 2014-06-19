@@ -369,3 +369,5 @@ by using nxml's indentation rules."
   (aset buffer-display-table ?\^M []))
 
 (add-hook 'cider-repl-mode-hook 'remove-dos-eol) ;Remove ^M from clojure repl in windows
+
+(load-file "~/.emacs.d/open.el")
