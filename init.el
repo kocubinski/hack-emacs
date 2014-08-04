@@ -36,9 +36,9 @@
 (when (display-graphic-p)
    (if (eq system-type 'windows-nt) 
        (set-face-attribute 'default nil :font "Consolas-11")
-     (set-face-attribute 'default nil :font "Inconsolata-12")
+     (set-face-attribute 'default nil :font "Inconsolata-11")
      ;(set-face-attribute 'default nil :font "Monaco-12")
-     ;(set-face-attribute 'default nil :font "Dejavu Sans Mono-11")
+     ;(set-face-attribute 'default nil :font "Dejavu Sans Mono-10")
      ))
 
 ;; scroll bar
@@ -351,28 +351,33 @@ by using nxml's indentation rules."
 (ome-ac-nrepl-setup)
 
 ;; try to speed up autocomplete
-;; (defun clojure-auto-complete ()
-;;   (interactive)
-;;   (let ((ac-sources
-;;          `(ac-source-nrepl-ns
-;;            ac-source-nrepl-vars
-;;            ac-source-nrepl-ns-classes
-;;            ac-source-nrepl-all-classes
-;;            ac-source-nrepl-java-methods
-;;            ac-source-nrepl-static-methods
-;;            ,@ac-sources)))
-;;   (auto-complete)))
+(defun clojure-auto-complete ()
+  (interactive)
+  (let ((ac-sources
+         `(ac-source-nrepl-ns
+           ac-source-nrepl-vars
+           ac-source-nrepl-ns-classes
+           ac-source-nrepl-all-classes
+           ac-source-nrepl-java-methods
+           ac-source-nrepl-static-methods
+           ,@ac-sources)))
+  (auto-complete)))
 
 (add-hook 'clojure-mode-hook 
 	  (lambda ()
 	    (paredit-mode)))
 
+;; TODO run only on windows.
 (defun remove-dos-eol ()
   "Do not show ^M in files containing mixed UNIX and DOS line endings."
   (interactive)
   (setq buffer-display-table (make-display-table))
   (aset buffer-display-table ?\^M []))
 
-(add-hook 'cider-repl-mode-hook 'remove-dos-eol) ;Remove ^M from clojure repl in windows
+(add-hook 'cider-repl-mode-hook 'remove-dos-eol)
 
 (load-file "~/.emacs.d/open.el")
+
+(defun clear-auto-complete ()
+  (interactive)
+  (setq ac-sources nil))
