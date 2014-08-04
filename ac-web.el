@@ -1,8 +1,8 @@
 (require 'find-file-in-project)
 
-(defvar css-regexp "\\.\\(-?[_a-zA-Z]+[_a-zA-Z0-9-]*\\)\\s-*{")
+(defvar acw-css-regexp "\\.\\(-?[_a-zA-Z]+[_a-zA-Z0-9-]*\\)\\s-*{")
 
-(defun parse-css-class-names ()
+(defun acw-parse-css-class-names ()
   (make-local-variable 'ffip-patterns)
   (setq ffip-patterns '("*.css"))
 
@@ -11,18 +11,18 @@
       (with-temp-buffer
 	(insert-file-contents f)
 	(save-match-data
-	  (while (re-search-forward css-regexp nil t)
+	  (while (re-search-forward acw-css-regexp nil t)
 	    (setq matches (cons (match-string 1) matches))))))
     (remove-duplicates matches)))
 
 (defvar ac-css-classes-cache nil)
 
 (defun ac-css-classes-init ()
-  (setq ac-css-classes-cache (parse-css-class-names)))
+  (setq ac-css-classes-cache (acw-parse-css-class-names)))
 
 (defvar ac-css-classes-source
   '(;;(init . ac-css-classes-init)
-    (candidates . ac-css-classes-cache)
+    (candidates . acw-parse-css-class-names)
     (cache)
     (limit . 20)
     ))

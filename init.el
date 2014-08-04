@@ -325,6 +325,8 @@ by using nxml's indentation rules."
 (require 'paredit)
 (require 'cider)
 (require 'cider-macroexpansion)
+(load-file "~/.emacs.d/ac-cider-compliment.el")
+(require 'ac-cider-compliment)
 
 (defun ome-cider-setup ()
   (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
@@ -339,8 +341,11 @@ by using nxml's indentation rules."
 (ome-cider-setup)
 
 (defun ome-ac-nrepl-setup ()
-  (add-hook 'cider-mode-hook 'ac-nrepl-setup)
-  (add-hook 'cider-repl-mode-hook 'ac-nrepl-setup)
+  ;(add-hook 'cider-mode-hook 'ac-nrepl-setup)
+  ;(add-hook 'cider-repl-mode-hook 'ac-nrepl-setup)
+  (add-hook 'cider-mode-hook 'ac-flyspell-workaround)
+  (add-hook 'cider-mode-hook 'ac-cider-compliment-setup)
+  (add-hook 'cider-repl-mode-hook 'ac-cider-compliment-repl-setup)
   (eval-after-load "auto-complete"
     '(add-to-list 'ac-modes 'cider-repl-mode)))
 (ome-ac-nrepl-setup)

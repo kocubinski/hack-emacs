@@ -10,7 +10,7 @@
 
 (defun legitipet-open ()
   (interactive)
-  (add-hook 'nrepl-connected-hook 'legitipet-start-website)
+  ;(add-hook 'nrepl-connected-hook 'legitipet-start-website)
   (find-file (concat dev-dir "/legitipet/project.clj"))
   (cider-jack-in))
 
