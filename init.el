@@ -340,12 +340,33 @@ by using nxml's indentation rules."
   (setq nrepl-buffer-name-show-port t))
 (ome-cider-setup)
 
+(defun mtk-is-cljs ()
+  (if (and (buffer-file-name)
+	   (file-name-extension (buffer-file-name))
+	   (string= "cljs" (file-name-extension (buffer-file-name))))
+	t nil))
+
+(defun mtk-clojure-ac-setup ()
+  (interactive)
+  (when (not (mtk-is-cljs))
+    (ac-flyspell-workaround)
+    (ac-cider-compliment-setup)))
+
+(defun mtk-clojure-ac-repl-setup ()
+  (interactive)
+  (when (not (mtk-is-cljs))
+    (ac-cider-compliment-repl-setup)))
+    
+
 (defun ome-ac-nrepl-setup ()
   ;(add-hook 'cider-mode-hook 'ac-nrepl-setup)
   ;(add-hook 'cider-repl-mode-hook 'ac-nrepl-setup)
-  (add-hook 'cider-mode-hook 'ac-flyspell-workaround)
-  (add-hook 'cider-mode-hook 'ac-cider-compliment-setup)
-  (add-hook 'cider-repl-mode-hook 'ac-cider-compliment-repl-setup)
+  ;(add-hook 'cider-mode-hook 'ac-flyspell-workaround)
+  ;(add-hook 'cider-mode-hook 'ac-cider-compliment-setup)
+  ;(add-hook 'cider-repl-mode-hook 'ac-cider-compliment-repl-setup)
+
+  (add-hook 'cider-mode-hook 'mtk-clojure-ac-setup)
+  (add-hook 'cider-repl-mode-hook 'mtk-clojure-ac-repl-setup)
   (eval-after-load "auto-complete"
     '(add-to-list 'ac-modes 'cider-repl-mode)))
 (ome-ac-nrepl-setup)
@@ -374,7 +395,7 @@ by using nxml's indentation rules."
   (setq buffer-display-table (make-display-table))
   (aset buffer-display-table ?\^M []))
 
-(add-hook 'cider-repl-mode-hook 'remove-dos-eol)
+;(add-hook 'cider-repl-mode-hook 'remove-dos-eol)
 
 (load-file "~/.emacs.d/open.el")
 
