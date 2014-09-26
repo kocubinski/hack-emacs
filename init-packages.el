@@ -2,7 +2,7 @@
     (append '(cl-lib 
 	       evil 
 	       color-theme 
-	       solarized-theme
+	       color-theme-solarized
 	       yascroll
 	       auto-complete
 	       pos-tip
