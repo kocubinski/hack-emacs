@@ -203,7 +203,7 @@
 (setq org-log-done 'time)
 
 (require 'rainbow-delimiters) ; shouldn't need this.. ?
-(global-rainbow-delimiters-mode)
+;;(global-rainbow-delimiters-mode)
 
 (auto-compression-mode t)
 (auto-image-file-mode t)
@@ -386,6 +386,7 @@ by using nxml's indentation rules."
 
 (add-hook 'clojure-mode-hook 
 	  (lambda ()
+	    (rainbow-delimiters-mode)
 	    (paredit-mode)))
 
 ;; TODO run only on windows.
